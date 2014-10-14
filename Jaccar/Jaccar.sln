@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jaccar", "Jaccar\Jaccar.csproj", "{86CA6A9F-318E-4C71-9C1B-9B38E1A4B150}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JaccarTest", "JaccarTest\JaccarTest.csproj", "{D1859126-A066-4C01-AB43-F5ECAA14D590}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86CA6A9F-318E-4C71-9C1B-9B38E1A4B150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86CA6A9F-318E-4C71-9C1B-9B38E1A4B150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86CA6A9F-318E-4C71-9C1B-9B38E1A4B150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86CA6A9F-318E-4C71-9C1B-9B38E1A4B150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1859126-A066-4C01-AB43-F5ECAA14D590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1859126-A066-4C01-AB43-F5ECAA14D590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1859126-A066-4C01-AB43-F5ECAA14D590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1859126-A066-4C01-AB43-F5ECAA14D590}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
