@@ -16,7 +16,20 @@ namespace Jaccar
                 .ToArray();
         }
 
-
+        public string[][] NGrammsFromSentence(string sentence, int n)
+        {
+            int size = sentence.Split(' ').Length;
+            string[][] nGramms = new string[Math.Max(0, size - n + 1)][];
+            for (int i = 0; i < size - n + 1; i++)
+            {
+                nGramms[i] = Regex.Split(sentence, @"\W+")
+                    .Skip(i)
+                    .Take(n)
+                    .Select(word => word.ToString())
+                    .ToArray();
+            }
+            return nGramms;
+        }
 
     }
 }
