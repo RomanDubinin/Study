@@ -1,0 +1,6 @@
+bin
+obj
+*.suo
+/java/.metadata/*
+
+/java/.metadata/.plugins
