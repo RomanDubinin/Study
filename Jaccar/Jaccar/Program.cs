@@ -11,15 +11,16 @@ namespace Jaccar
     {
         static void Main(string[] args)
         {
-            JaccarMaesure j = new JaccarMaesure();
+            JaccarMeasure j = new JaccarMeasure();
             //foreach (string str in j.ToSentences("qwe. 123[74] 14,88"))
             //    Console.WriteLine(str);
 
             //var a = j.ToSentences("qwe. 123[74] 14,88");
             //Console.WriteLine((a));
 
-            string text = "11 12 13 14 15 16 17 18 19";
-            var a = j.NGrammsFromSentence(text, 30).ToArray();
+            string text = "11,12, 13; 14 15 16 . 21' 22 - 23 24# 25 26[31 32 33? 41 42 43, 44] 51";
+            var a = j.NGrammsFromText(text, 3).ToArray();
+
             Console.ReadKey();
         }
     }
