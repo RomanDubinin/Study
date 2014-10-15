@@ -12,9 +12,17 @@ namespace JaccarTest
         [TestMethod]
         public void Sentences1()
         {
-            var actual = j.ToSentences("qwe. 123[74] 14,88");
-            var expected = new string[] { "qwe", "123", "74", "14,88" };
+            var actual = j.ToSentences("qwe. 123[74] 14,88:");
+            var expected = new string[] { "qwe", "123", "74", "14,88:" };
             for(int i = 0; i < actual.Length; i++)
+                Assert.AreEqual(expected[i], actual[i]);
+        }
+
+        public void Sentences2()
+        {
+            var actual = j.ToSentences("А. С. Пушкин был... [самым] настоящим (!) поэтом");
+            var expected = new string[] { "А", "C", "Пушкин был", "самым", "настоящим", "поэтом" };
+            for (int i = 0; i < actual.Length; i++)
                 Assert.AreEqual(expected[i], actual[i]);
         }
 
@@ -58,7 +66,7 @@ namespace JaccarTest
         [TestMethod]
         public void NGrammsFromText1()
         {
-            string text = "11,12, 13; 14 15: 16. 21' 22 - 23 24# 25 26[31 32 33? 41 42 43, 44] 51";
+            string text = "11,12, 13; 14 15: 16. 21' 22 - 23 24# 25 26;[31 32 33? 41 42 43, 44] 51";
             int n = 3;
             string[][] actual = j.NGrammsFromText(text, n);
             string[][] expected = new string[][]

@@ -7,6 +7,26 @@ using System.Text.RegularExpressions;
 
 namespace Jaccar
 {
+    public class Comparer : IEqualityComparer<string[]>
+    {
+        public bool Equals(string[] first, string[] second)
+        {
+            if (first.Length != second.Length)
+                return false;
+            for (int i = 0; i < first.Length; i++)
+            {
+                if (first[i] != second[i])
+                    return false;
+            }
+            return true;
+        }
+
+        public int GetHashCode(string[] obj)
+        {
+            return 0;
+        }
+    }
+
     public class JaccarMeasure
     {
         public string[] ToSentences(string text)
@@ -18,14 +38,15 @@ namespace Jaccar
 
         public string[][] NGrammsFromSentence(string sentence, int n)
         {
-            int size = Regex.Split(sentence, @"\W+").Length;
-            string[][] nGramms = new string[Math.Max(0, size - n + 1)][];
-            for (int i = 0; i < size - n + 1; i++)
+            var words = Regex.Split(sentence, @"\W+").Where(word => word != "").ToArray();
+            int sentenceSize = words.Length;
+            string[][] nGramms = new string[Math.Max(0, sentenceSize - n + 1)][];
+            for (int i = 0; i < sentenceSize - n + 1; i++)
             {
-                nGramms[i] = Regex.Split(sentence, @"\W+")
+                nGramms[i] = words
                     .Skip(i)
                     .Take(n)
-                    .Select(word => word.ToString())
+                    .Select(word => word.ToString().ToLower())
                     .ToArray();
             }
             return nGramms;
@@ -37,7 +58,7 @@ namespace Jaccar
 
             foreach (var sentence in ToSentences(text))
             {
-                foreach (var nGramms in NGrammsFromSentence(sentence.ToLower(), n))
+                foreach (var nGramms in NGrammsFromSentence(sentence, n))
                 {
                     AllNGramms.Add(nGramms);
                 }
