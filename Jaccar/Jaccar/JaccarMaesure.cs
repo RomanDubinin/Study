@@ -27,6 +27,7 @@ namespace Jaccar
         }
     }
 
+
     public class JaccarMeasure
     {
         public string[] ToSentences(string text)
