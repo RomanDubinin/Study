@@ -31,7 +31,7 @@ namespace JaccarTest
         {
             string text = "11 12 13, 14: 15 16; 17 18 19";
             int n = 3;
-            string[][] actual = j.NGrammsFromSentence(text, n);
+            NGram[] actual = j.NGrammsFromSentence(text, n);
             
             var expected = new string[][] 
             {
@@ -48,7 +48,7 @@ namespace JaccarTest
             {
                 for(int k = 0; k < expected[i].Length; k++)
                 {
-                    Assert.AreEqual(expected[i][k], actual[i][k]);
+                    Assert.AreEqual(expected[i][k], actual[i].words[k]);
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace JaccarTest
         { 
             string text = "11 12 13 14 15 16 17 18 19";
             int n = 30;
-            string[][] actual = j.NGrammsFromSentence(text, n);
+            NGram[] actual = j.NGrammsFromSentence(text, n);
 
             Assert.AreEqual(0, actual.Length);
         }
@@ -68,7 +68,7 @@ namespace JaccarTest
         {
             string text = "11,12, 13; 14 15: 16. 21' 22 - 23 24# 25 26;[31 32 33? 41 42 43, 44] 51";
             int n = 3;
-            string[][] actual = j.NGrammsFromText(text, n);
+            NGram[] actual = j.NGrammsFromText(text, n);
             string[][] expected = new string[][]
             {
                 new string[]{"11", "12", "13"},
@@ -88,7 +88,7 @@ namespace JaccarTest
             {
                 for (int k = 0; k < expected[i].Length; k++)
                 {
-                    Assert.AreEqual(expected[i][k], actual[i][k]);
+                    Assert.AreEqual(expected[i][k], actual[i].words[k]);
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace JaccarTest
         {
             string text = "A11,12, 13; 14 15: 16. 21' 22 - 23 24# 25 26[31 32 33? 41 42 43, 44] 51!12, 13; 14 15";
             int n = 4;
-            string[][] actual = j.NGrammsFromText(text, n);
+            NGram[] actual = j.NGrammsFromText(text, n);
             string[][] expected = new string[][]
             {
                 new string[]{"a11", "12", "13", "14"},
@@ -116,7 +116,7 @@ namespace JaccarTest
             {
                 for (int k = 0; k < expected[i].Length; k++)
                 {
-                    Assert.AreEqual(expected[i][k], actual[i][k]);
+                    Assert.AreEqual(expected[i][k], actual[i].words[k]);
                 }
             }
         }

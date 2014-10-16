@@ -7,23 +7,45 @@ using System.Text.RegularExpressions;
 
 namespace Jaccar
 {
-    public class Comparer : IEqualityComparer<string[]>
+    public class NGram : IEqualityComparer<NGram>
     {
-        public bool Equals(string[] first, string[] second)
+        public string[] words { get; private set; }
+        public int count { get; private set; }
+
+        public NGram(){}
+
+        public NGram(string[] w, int n)
         {
-            if (first.Length != second.Length)
+            words = new string[n];
+            w.CopyTo(words, 0);
+            count = n;
+        }
+
+        public bool Equals(NGram first, NGram second)
+        {
+            return first == second;
+        }
+
+        public int GetHashCode(NGram obj)
+        {
+            return 0;
+        }
+    
+        public static bool operator==(NGram first, NGram second)
+        {
+            if (first.count != second.count)
                 return false;
-            for (int i = 0; i < first.Length; i++)
+            for (int i = 0; i < first.count; i++)
             {
-                if (first[i] != second[i])
+                if (first.words[i] != second.words[i])
                     return false;
             }
             return true;
         }
 
-        public int GetHashCode(string[] obj)
-        {
-            return 0;
+        public static bool operator !=(NGram first, NGram second)
+        { 
+            return !(first == second);
         }
     }
 
@@ -37,25 +59,27 @@ namespace Jaccar
                 .ToArray();
         }
 
-        public string[][] NGrammsFromSentence(string sentence, int n)
+        public NGram[] NGrammsFromSentence(string sentence, int n)
         {
-            var words = Regex.Split(sentence, @"\W+").Where(word => word != "").ToArray();
+            var words = Regex.Split(sentence, @"\W+")
+                .Where(word => word != "")
+                .ToArray();
             int sentenceSize = words.Length;
-            string[][] nGramms = new string[Math.Max(0, sentenceSize - n + 1)][];
+            NGram[] nGramms = new NGram[Math.Max(0, sentenceSize - n + 1)];
             for (int i = 0; i < sentenceSize - n + 1; i++)
             {
-                nGramms[i] = words
+                nGramms[i] = new NGram (words
                     .Skip(i)
                     .Take(n)
                     .Select(word => word.ToString().ToLower())
-                    .ToArray();
+                    .ToArray(), n);
             }
             return nGramms;
         }
 
-        public string[][] NGrammsFromText(string text, int n)
+        public NGram[] NGrammsFromText(string text, int n)
         {
-            List<string[]> AllNGramms = new List<string[]>();
+            List<NGram> AllNGramms = new List<NGram>();
 
             foreach (var sentence in ToSentences(text))
             {
