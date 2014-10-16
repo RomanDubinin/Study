@@ -48,18 +48,15 @@ namespace Jaccar
         { 
             return !(first == second);
         }
-    }
 
-    public class JaccarMeasure
-    {
-        public string[] ToSentences(string text)
+        private static string[] ToSentences(string text)
         {
             return Regex.Split(text, "[\\[\\].!?(){}]")
                 .Select(sentense => sentense.Trim())
                 .ToArray();
         }
 
-        public NGram[] NGrammsFromSentence(string sentence, int n)
+        public static NGram[] NGrammsFromSentence(string sentence, int n)
         {
             var words = Regex.Split(sentence, @"\W+")
                 .Where(word => word != "")
@@ -68,7 +65,7 @@ namespace Jaccar
             NGram[] nGramms = new NGram[Math.Max(0, sentenceSize - n + 1)];
             for (int i = 0; i < sentenceSize - n + 1; i++)
             {
-                nGramms[i] = new NGram (words
+                nGramms[i] = new NGram(words
                     .Skip(i)
                     .Take(n)
                     .Select(word => word.ToString().ToLower())
@@ -77,7 +74,7 @@ namespace Jaccar
             return nGramms;
         }
 
-        public NGram[] NGrammsFromText(string text, int n)
+        public static NGram[] NGrammsFromText(string text, int n)
         {
             List<NGram> AllNGramms = new List<NGram>();
 
@@ -92,17 +89,17 @@ namespace Jaccar
         }
     }
 
+
     class Program
     {
         static void Main(string[] args)
         {
-            JaccarMeasure j = new JaccarMeasure();
             string text1 = String.Concat(File.ReadAllLines(args[0]));
             string text2 = String.Concat(File.ReadAllLines(args[1]));
             int n = int.Parse(args[2]);
 
-            var text1NGramms = j.NGrammsFromText(text1, n);
-            var text2NGramms = j.NGrammsFromText(text2, n);
+            var text1NGramms = NGram.NGrammsFromText(text1, n);
+            var text2NGramms = NGram.NGrammsFromText(text2, n);
             var allNGrams = text1NGramms.Concat(text2NGramms)
                 .GroupBy(g => g, new NGram())
                 .Select(group => group.Key)
