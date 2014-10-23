@@ -8,24 +8,36 @@ namespace PlatformManager
 {
     class TestMachine: IMachine
     {
-        public void Up()
+        private void Up()
         {
             Console.WriteLine("UP");
         }
 
-        public void Down()
+        private void Down()
         {
             Console.WriteLine("Down");
         }
 
-        public void Left()
+        private void Left()
         {
             Console.WriteLine("Left");
         }
 
-        public void Right()
+        private void Right()
         {
             Console.WriteLine("Right");
+        }
+
+        public void ChangeVelocityVector(KeyBoardState keys)
+        {
+            if (keys.state[0])
+                Up();
+            if (keys.state[1])
+                Down();
+            if (keys.state[2])
+                Left();
+            if (keys.state[3])
+                Right();
         }
     }
 }

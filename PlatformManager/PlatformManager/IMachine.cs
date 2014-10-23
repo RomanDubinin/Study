@@ -8,9 +8,6 @@ namespace PlatformManager
 {
     interface IMachine
     {
-        void Up();
-        void Down();
-        void Left();
-        void Right();
+        void ChangeVelocityVector(KeyBoardState state);
     }
 }

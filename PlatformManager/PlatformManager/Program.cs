@@ -11,21 +11,7 @@ namespace PlatformManager
     {
         private static IMachine machine = new TestMachine();
         public delegate void Function();
-        private enum navigationKeys
-        {
-            Up,
-            Down,
-            Left,
-            Right
-        }
         private static bool[] navigationKeyPressed = new bool[4];
-        private static Function[] functions  = new Function[]
-        {
-            machine.Up,
-            machine.Down,
-            machine.Left,
-            machine.Right
-        };
  
         private static void form_KeyDown(object sender, KeyEventArgs e)
         {
@@ -62,11 +48,7 @@ namespace PlatformManager
             while (true)
             {
                 Console.Clear();
-                for(int i = 0; i < navigationKeyPressed.Length; i++)
-                {
-                    if(navigationKeyPressed[i])
-                        functions[i]();
-                }
+                machine.ChangeVelocityVector(new KeyBoardState(navigationKeyPressed));
             }
         }
  
