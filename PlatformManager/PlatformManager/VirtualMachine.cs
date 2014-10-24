@@ -62,17 +62,21 @@ namespace PlatformManager
                 Up();
             else if (keys.state[(int)navigationKeys.Down] && !keys.state[(int)navigationKeys.Up])
                 Down();
-            else 
-                //TODO: скорость к 0 speed = (abs(speed)-delta)
-                ;
+            else
+            {
+                if(currentSpeed != 0)
+                currentSpeed = currentSpeed - (deltaSpeedUp/10 * Math.Abs(currentSpeed) / currentSpeed);
+            }
 
             if (keys.state[(int)navigationKeys.Left] && !keys.state[(int)navigationKeys.Right])
                 Left();
             else if (keys.state[(int)navigationKeys.Right] && !keys.state[(int)navigationKeys.Left])
                 Right();
             else
-                //TODO: dir к 0
-                ;
+            {
+                if (currentDirection != 0)
+                    currentDirection = currentDirection - (deltaRotate / 10 * Math.Abs(currentDirection) / currentDirection);
+            }
 
             Tuple<int, int> wheels = GetWheelsSpeed();
 

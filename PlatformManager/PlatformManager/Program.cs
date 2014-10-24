@@ -9,8 +9,7 @@ namespace PlatformManager
 {
     class Program
     {
-        private static IMachine machine = new VirtualMachine(255, 20, 20);
-        public delegate void Function();
+        private static IMachine machine;
         private static bool[] navigationKeyPressed = new bool[4];
  
         private static void form_KeyDown(object sender, KeyEventArgs e)
@@ -43,13 +42,10 @@ namespace PlatformManager
                 navigationKeyPressed[(int)navigationKeys.Right] = false;
         }
  
-        private static void PerformAction()
+        private static void PerformAction(object sender, EventArgs e)
         {
-            while (true)
-            {
-                Console.Clear();
-                machine.ChangeVelocityVector(new KeyBoardState(navigationKeyPressed));
-            }
+            Console.Clear();
+            machine.ChangeVelocityVector(new KeyBoardState(navigationKeyPressed));
         }
  
         static void Main(string[] args)
@@ -58,8 +54,14 @@ namespace PlatformManager
             Form form = new Form();
             form.KeyDown += form_KeyDown;
             form.KeyUp += form_KeyUp;
- 
-            new Action(PerformAction).BeginInvoke(null, null);
+
+            machine = new VirtualMachine(255, 20, 20);
+
+            //new Action(PerformAction).BeginInvoke(null, null);
+            Timer timer = new Timer();
+            timer.Interval = 100;
+            timer.Tick += new EventHandler(PerformAction);
+            timer.Start();
             Application.Run(form);
  
         }
