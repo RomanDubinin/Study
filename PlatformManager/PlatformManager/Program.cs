@@ -53,7 +53,7 @@ namespace PlatformManager
             Tuple<int, int> wheels = machine.GetWheelsSpeed();
 
             Console.WriteLine("--ride" + wheels.Item1 + "" + wheels.Item2);
-            //port.WriteLine("ride" + wheels.Item1 + "" + wheels.Item2);
+            port.Write(wheels.Item1.ToString());
         }
 
         static void Main(string[] args)
@@ -63,8 +63,8 @@ namespace PlatformManager
             form.KeyDown += form_KeyDown;
             form.KeyUp += form_KeyUp;
 
-            //port = new SerialPort("COM16", 115200);
-            //port.Open();
+            port = new SerialPort("COM9", 9600);
+            port.Open();
             machine = new Machine(255, 20, 20);
 
             //new Action(PerformAction).BeginInvoke(null, null);
