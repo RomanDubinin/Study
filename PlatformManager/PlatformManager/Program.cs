@@ -9,7 +9,7 @@ namespace PlatformManager
 {
     class Program
     {
-        private static IMachine machine = new TestMachine();
+        private static IMachine machine = new VirtualMachine(255, 20, 20);
         public delegate void Function();
         private static bool[] navigationKeyPressed = new bool[4];
  

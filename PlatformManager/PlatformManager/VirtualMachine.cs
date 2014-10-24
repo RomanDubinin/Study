@@ -10,66 +10,73 @@ namespace PlatformManager
     {
         private const int startSpeed = 50;
         private int maxSpeed;
+        private int sharpTurn;
         private int currentSpeed;
-        private double currentDirection;
-        private double epsilon;
-        private double rotateCoef;
-        private double speedUpCoef;
+        private int currentDirection;
+        private int deltaRotate;
+        private int deltaSpeedUp;
 
-        VirtualMachine(int ms, double e, double rc, double sc)
+        public VirtualMachine(int ms, int dr, int ds)
         {
             maxSpeed = ms;
-            epsilon = e;
-            rotateCoef = rc;
-            speedUpCoef = sc;
+            sharpTurn = ms;
+            deltaRotate = dr;
+            deltaSpeedUp = ds;
             currentDirection = 0;
             currentSpeed = 0;
         }
 
-        private Tuple<int, int> GetWheelsSpeedV1(int speed, double direction) // returns left and right wheel speed
+        private Tuple<int, int> GetWheelsSpeed() // returns left and right wheel speed
         {
-            int newSpeed = (int)(1 - Math.Abs(direction)) * maxSpeed;
-            if (direction < 0)
-                return Tuple.Create(newSpeed, currentSpeed - newSpeed);
-            if (direction > 0)
-                return Tuple.Create(currentSpeed - newSpeed, newSpeed);
-            else
-                return Tuple.Create(currentSpeed / 2, currentSpeed / 2);
-        }
-
-        private Tuple<int, int> GetWheelsSpeedV2(int speed, double direction) // returns left and right wheel speed
-        {
-            int newSpeed = (int)(1 - Math.Abs(direction)) * maxSpeed;
-            if (direction < 0)
-                return Tuple.Create(newSpeed, currentSpeed);
-            if (direction > 0)
-                return Tuple.Create(currentSpeed, newSpeed);
+            if (currentDirection < 0)
+                return Tuple.Create(currentSpeed - currentDirection, currentSpeed + currentDirection);
+            if (currentDirection > 0)
+                return Tuple.Create(currentSpeed + currentDirection, currentSpeed - currentDirection);
             else
                 return Tuple.Create(currentSpeed, currentSpeed);
         }
 
-        public void Up()
+        private void Up()
         {
-            if(Math.Abs(currentSpeed) < epsilon)
-                currentSpeed = startSpeed;
-
-            else if(currentSpeed < 0)
-                currentSpeed = (int)(currentSpeed / speedUpCoef);
-
-            else if(currentSpeed > 0)
-                currentSpeed = Math.Min(255, (int)(currentSpeed * speedUpCoef));
-
-            if (Math.Abs(currentDirection) < epsilon)
-                currentDirection = 0;
-            else
-                currentDirection /= rotateCoef;
-
-
-            Tuple<int, int> wheelsSpeed = GetWheelsSpeedV1(currentSpeed, currentDirection);
-
-            Console.WriteLine("%d   %d", wheelsSpeed.Item1, wheelsSpeed.Item2);
+            currentSpeed = Math.Min(maxSpeed / 2, currentSpeed + deltaSpeedUp);
         }
 
+        private void Down()
+        {
+            currentSpeed = Math.Max(-maxSpeed / 2, currentSpeed - deltaSpeedUp);
+        }
 
+        private void Left()
+        {
+            currentDirection = Math.Max(-sharpTurn, currentDirection - deltaRotate);
+        }
+
+        private void Right()
+        {
+            currentDirection = Math.Min(sharpTurn, currentDirection + deltaRotate);
+        }
+
+        public void ChangeVelocityVector(KeyBoardState keys)
+        {
+            if (keys.state[(int)navigationKeys.Up] && !keys.state[(int)navigationKeys.Down])
+                Up();
+            else if (keys.state[(int)navigationKeys.Down] && !keys.state[(int)navigationKeys.Up])
+                Down();
+            else 
+                //TODO: скорость к 0 speed = (abs(speed)-delta)
+                ;
+
+            if (keys.state[(int)navigationKeys.Left] && !keys.state[(int)navigationKeys.Right])
+                Left();
+            else if (keys.state[(int)navigationKeys.Right] && !keys.state[(int)navigationKeys.Left])
+                Right();
+            else
+                //TODO: dir к 0
+                ;
+
+            Tuple<int, int> wheels = GetWheelsSpeed();
+
+            Console.WriteLine(wheels.Item1 + "    " + wheels.Item2);
+        }
     }
 }
