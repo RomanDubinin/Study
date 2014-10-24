@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlatformManager
 {
-    class VirtualMachine: IMachine
+    class Machine : IMachine
     {
         private const int startSpeed = 50;
         private int maxSpeed;
@@ -16,7 +16,7 @@ namespace PlatformManager
         private int deltaRotate;
         private int deltaSpeedUp;
 
-        public VirtualMachine(int ms, int dr, int ds)
+        public Machine(int ms, int dr, int ds)
         {
             maxSpeed = ms;
             sharpTurn = ms;
@@ -26,14 +26,12 @@ namespace PlatformManager
             currentSpeed = 0;
         }
 
-        private Tuple<int, int> GetWheelsSpeed() // returns left and right wheel speed
+        public Tuple<int, int> GetWheelsSpeed() // returns left and right wheel speed
         {
-            if (currentDirection < 0)
-                return Tuple.Create(currentSpeed - currentDirection, currentSpeed + currentDirection);
-            if (currentDirection > 0)
-                return Tuple.Create(currentSpeed + currentDirection, currentSpeed - currentDirection);
-            else
+            if(currentDirection == 0)
                 return Tuple.Create(currentSpeed, currentSpeed);
+            else
+                return Tuple.Create(currentSpeed + currentDirection, currentSpeed - currentDirection);
         }
 
         private void Up()
@@ -64,8 +62,8 @@ namespace PlatformManager
                 Down();
             else
             {
-                if(currentSpeed != 0)
-                currentSpeed = currentSpeed - (deltaSpeedUp/10 * Math.Abs(currentSpeed) / currentSpeed);
+                if (currentSpeed != 0)
+                    currentSpeed = currentSpeed - (deltaSpeedUp / 10 * Math.Abs(currentSpeed) / currentSpeed);
             }
 
             if (keys.state[(int)navigationKeys.Left] && !keys.state[(int)navigationKeys.Right])
@@ -77,10 +75,6 @@ namespace PlatformManager
                 if (currentDirection != 0)
                     currentDirection = currentDirection - (deltaRotate / 10 * Math.Abs(currentDirection) / currentDirection);
             }
-
-            Tuple<int, int> wheels = GetWheelsSpeed();
-
-            Console.WriteLine(wheels.Item1 + "    " + wheels.Item2);
         }
     }
 }

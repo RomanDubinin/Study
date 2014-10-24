@@ -9,5 +9,6 @@ namespace PlatformManager
     interface IMachine
     {
         void ChangeVelocityVector(KeyBoardState state);
+        Tuple<int, int> GetWheelsSpeed();
     }
 }
