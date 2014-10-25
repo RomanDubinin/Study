@@ -9,7 +9,7 @@
 #include "WProgram.h"
 #endif
 
-#define DEBUGPLAINTEXT 1
+//#define DEBUGPLAINTEXT 1
 
 typedef void(*actionPointer)(char*, byte);
 typedef bool(*predicatePointer)(char*, byte);
@@ -113,9 +113,9 @@ private:
 public:
 
 	void getBytesFromSerial(){
-  		byte toRead = min(Serial1.available(), freeBytes()-1);
+  		byte toRead = min(Serial2.available(), freeBytes()-1);
 		for (byte i = 0; i < toRead; i++){
-			addByte2Buffer(Serial1.read());
+			addByte2Buffer(Serial2.read());
 		}
 	}
 

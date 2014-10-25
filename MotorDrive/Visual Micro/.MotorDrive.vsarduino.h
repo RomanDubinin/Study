@@ -38,14 +38,15 @@
 typedef unsigned char byte;
 extern "C" void __cxa_pure_virtual() {;}
 
+byte getDigitByChar(char c);
 void Ride(char* command, byte comLen);
 //
 //
 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\arduino.h"
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega\pins_arduino.h" 
-#include "C:\Users\User\Documents\Arduino\MotorDrive\MotorDrive.ino"
-#include "C:\Users\User\Documents\Arduino\MotorDrive\CommandProcesser.h"
-#include "C:\Users\User\Documents\Arduino\MotorDrive\L298.h"
-#include "C:\Users\User\Documents\Arduino\MotorDrive\Motor.h"
+#include "D:\Study\MotorDrive\MotorDrive.ino"
+#include "D:\Study\MotorDrive\CommandProcesser.h"
+#include "D:\Study\MotorDrive\L298.h"
+#include "D:\Study\MotorDrive\Motor.h"
 #endif
