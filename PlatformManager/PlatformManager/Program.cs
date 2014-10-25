@@ -16,6 +16,18 @@ namespace PlatformManager
         private static SerialPort port;
         private static Form form;
 
+        private static string IntToValidString(int val)
+        {
+            
+            StringBuilder strVal = new StringBuilder();
+            if (val < 0)
+                strVal.Append("-");
+            else
+                strVal.Append("+");
+            strVal.Append(Math.Abs(val).ToString("D" + 3));
+            return strVal.ToString();
+        }
+
         private static void form_KeyDown(object sender, KeyEventArgs e)
         {
 
@@ -27,10 +39,6 @@ namespace PlatformManager
                 navigationKeyPressed[(int)navigationKeys.Left] = true;
             if (e.KeyCode == Keys.Right)
                 navigationKeyPressed[(int)navigationKeys.Right] = true;
-
-            //Console.WriteLine(navigationKeyPressed
-            //    .Where(x => x == true)
-            //    .Count());
         }
 
         private static void form_KeyUp(object sender, KeyEventArgs e)
@@ -52,8 +60,13 @@ namespace PlatformManager
             machine.ChangeVelocityVector(new KeyBoardState(navigationKeyPressed));
             Tuple<int, int> wheels = machine.GetWheelsSpeed();
 
-            Console.WriteLine("--ride" + wheels.Item1 + "" + wheels.Item2);
-            port.Write(wheels.Item1.ToString());
+            StringBuilder data = new StringBuilder();
+            data.Append("ride");
+            data.Append(IntToValidString(wheels.Item1));
+            data.Append(IntToValidString(wheels.Item2));
+
+            Console.WriteLine(data);
+            port.Write(data.ToString());
         }
 
         static void Main(string[] args)
@@ -63,7 +76,7 @@ namespace PlatformManager
             form.KeyDown += form_KeyDown;
             form.KeyUp += form_KeyUp;
 
-            port = new SerialPort("COM9", 9600);
+            port = new SerialPort("COM22", 115200);
             port.Open();
             machine = new Machine(255, 20, 20);
 
