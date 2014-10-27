@@ -13,17 +13,23 @@ namespace PlatformManager
         private int sharpTurn;
         private int currentSpeed;
         private int currentDirection;
-        private int deltaRotate;
+        private int deltaDirectionUp;
         private int deltaSpeedUp;
+        private int deltaDirectionFalling;
+        private int deltaSpeedFalling;
+        private int deltaBreaking;
 
         public Machine(int ms, int dr, int ds)
         {
             maxSpeed = ms;
             sharpTurn = ms;
-            deltaRotate = dr;
+            deltaDirectionUp = dr;
             deltaSpeedUp = ds;
             currentDirection = 0;
             currentSpeed = 0;
+            deltaSpeedFalling = deltaSpeedUp / 5;
+            deltaDirectionFalling = deltaDirectionUp / 2;
+            deltaBreaking = deltaDirectionUp * 2;
         }
 
         public Tuple<int, int> GetWheelsSpeed() // returns left and right wheel speed
@@ -36,26 +42,40 @@ namespace PlatformManager
 
         private void Up()
         {
-            currentSpeed = Math.Min(maxSpeed / 2, currentSpeed + deltaSpeedUp);
+            if(currentSpeed >= 0)
+                currentSpeed = Math.Min(maxSpeed / 2, currentSpeed + deltaSpeedUp);
+            else
+                currentSpeed = Math.Min(maxSpeed / 2, currentSpeed + deltaBreaking);
         }
 
         private void Down()
         {
-            currentSpeed = Math.Max(-maxSpeed / 2, currentSpeed - deltaSpeedUp);
+            if(currentSpeed <= 0)
+                currentSpeed = Math.Max(-maxSpeed / 2, currentSpeed - deltaSpeedUp);
+            else
+                currentSpeed = Math.Max(-maxSpeed / 2, currentSpeed - deltaBreaking);
         }
 
         private void Left()
         {
-            currentDirection = Math.Max(-sharpTurn, currentDirection - deltaRotate);
+            if(currentDirection <=0)
+                currentDirection = Math.Max(-sharpTurn, currentDirection - deltaDirectionUp);
+            else
+                currentDirection = Math.Max(-sharpTurn, currentDirection - deltaBreaking);
         }
 
         private void Right()
         {
-            currentDirection = Math.Min(sharpTurn, currentDirection + deltaRotate);
+            if(currentDirection >= 0)
+                currentDirection = Math.Min(sharpTurn, currentDirection + deltaDirectionUp);
+            else
+                currentDirection = Math.Min(sharpTurn, currentDirection + deltaBreaking);
         }
 
         public void ChangeVelocityVector(KeyBoardState keys)
         {
+            Console.WriteLine(deltaSpeedFalling);
+            Console.WriteLine(deltaDirectionFalling);
             if (keys.state[(int)navigationKeys.Up] && !keys.state[(int)navigationKeys.Down])
                 Up();
             else if (keys.state[(int)navigationKeys.Down] && !keys.state[(int)navigationKeys.Up])
@@ -63,7 +83,7 @@ namespace PlatformManager
             else
             {
                 if (currentSpeed != 0)
-                    currentSpeed = currentSpeed - (deltaSpeedUp / 10 * Math.Abs(currentSpeed) / currentSpeed);
+                    currentSpeed = currentSpeed - (deltaSpeedFalling * Math.Abs(currentSpeed) / currentSpeed);
             }
 
             if (keys.state[(int)navigationKeys.Left] && !keys.state[(int)navigationKeys.Right])
@@ -73,7 +93,7 @@ namespace PlatformManager
             else
             {
                 if (currentDirection != 0)
-                    currentDirection = currentDirection - (deltaRotate / 10 * Math.Abs(currentDirection) / currentDirection);
+                    currentDirection = currentDirection - (deltaDirectionFalling * Math.Abs(currentDirection) / currentDirection);
             }
         }
     }
