@@ -80,7 +80,6 @@ namespace PlatformManager
             port.Open();
             machine = new Machine(255, 20, 20);
 
-            //new Action(PerformAction).BeginInvoke(null, null);
             timer = new Timer();
             timer.Interval = 100;
             timer.Tick += new EventHandler(PerformAction);

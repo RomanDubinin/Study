@@ -8,7 +8,6 @@ namespace PlatformManager
 {
     class Machine : IMachine
     {
-        private const int startSpeed = 50;
         private int maxSpeed;
         private int sharpTurn;
         private int currentSpeed;
@@ -28,7 +27,7 @@ namespace PlatformManager
             currentDirection = 0;
             currentSpeed = 0;
             deltaSpeedFalling = deltaSpeedUp / 5;
-            deltaDirectionFalling = deltaDirectionUp / 2;
+            deltaDirectionFalling = deltaDirectionUp ;
             deltaBreaking = deltaDirectionUp * 2;
         }
 
@@ -36,8 +35,19 @@ namespace PlatformManager
         {
             if(currentDirection == 0)
                 return Tuple.Create(currentSpeed, currentSpeed);
+            else if(currentSpeed == 0)
+                return Tuple.Create(currentDirection, -currentDirection);
+
+            if (currentSpeed > 0)
+            {
+                return Tuple.Create(
+                    Math.Min(255, currentSpeed + currentDirection),
+                    Math.Min(255, currentSpeed - currentDirection));
+            }
             else
-                return Tuple.Create(currentSpeed + currentDirection, currentSpeed - currentDirection);
+                return Tuple.Create(
+                    Math.Max(-255, currentSpeed - currentDirection),
+                    Math.Max(-255, currentSpeed + currentDirection));
         }
 
         private void Up()
@@ -72,29 +82,37 @@ namespace PlatformManager
                 currentDirection = Math.Min(sharpTurn, currentDirection + deltaBreaking);
         }
 
+        private void SpeedFalling()
+        {
+            if (Math.Abs(currentSpeed) < deltaSpeedFalling)
+                currentSpeed = 0;
+            if (currentSpeed != 0)
+                currentSpeed = currentSpeed - (deltaSpeedFalling * Math.Abs(currentSpeed) / currentSpeed);
+        }
+
+        private void DirectionFalling()
+        {
+            if (Math.Abs(currentDirection) < deltaDirectionFalling)
+                currentDirection = 0;
+            if (currentDirection != 0)
+                currentDirection = currentDirection - (deltaDirectionFalling * Math.Abs(currentDirection) / currentDirection);
+        }
+
         public void ChangeVelocityVector(KeyBoardState keys)
         {
-            Console.WriteLine(deltaSpeedFalling);
-            Console.WriteLine(deltaDirectionFalling);
             if (keys.state[(int)navigationKeys.Up] && !keys.state[(int)navigationKeys.Down])
                 Up();
             else if (keys.state[(int)navigationKeys.Down] && !keys.state[(int)navigationKeys.Up])
                 Down();
             else
-            {
-                if (currentSpeed != 0)
-                    currentSpeed = currentSpeed - (deltaSpeedFalling * Math.Abs(currentSpeed) / currentSpeed);
-            }
+                SpeedFalling();
 
             if (keys.state[(int)navigationKeys.Left] && !keys.state[(int)navigationKeys.Right])
                 Left();
             else if (keys.state[(int)navigationKeys.Right] && !keys.state[(int)navigationKeys.Left])
                 Right();
             else
-            {
-                if (currentDirection != 0)
-                    currentDirection = currentDirection - (deltaDirectionFalling * Math.Abs(currentDirection) / currentDirection);
-            }
+                DirectionFalling();
         }
     }
 }
