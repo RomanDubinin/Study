@@ -39,7 +39,13 @@ public:
 	}
 };
 
-extern L298 Motor1(9, 8, 7);
-extern L298 Motor2(10, 11, 12);
+extern L298 MotorUL(2, 22, 23);
+extern L298 MotorUR(3, 24, 25);
+
+extern L298 MotorDL(4, 26, 27);
+extern L298 MotorDR(5, 28, 29);
+
+extern L298 MotorWL(6, 30, 31);
+extern L298 MotorWR(7, 32, 33);
 
 #endif

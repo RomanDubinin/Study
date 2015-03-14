@@ -113,9 +113,9 @@ private:
 public:
 
 	void getBytesFromSerial(){
-  		byte toRead = min(Serial2.available(), freeBytes()-1);
+  		byte toRead = min(Serial.available(), freeBytes()-1);
 		for (byte i = 0; i < toRead; i++){
-			addByte2Buffer(Serial2.read());
+			addByte2Buffer(Serial.read());
 		}
 	}
 
